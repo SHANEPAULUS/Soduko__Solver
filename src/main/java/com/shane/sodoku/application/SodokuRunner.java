@@ -10,7 +10,9 @@ package com.shane.sodoku.application;
   */
 
 public class SodokuRunner {
+   
    public static void main(String [] args){
       //System.out.println("Inside the main void method of the application...");
+      //TODO: provide the user with a menu where they could pick the difficulty level + print the unsolved / solved matrix as well.
    }
 }

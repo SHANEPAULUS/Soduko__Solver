@@ -13,7 +13,6 @@ import org.junit.Test;
 public class SodokuHelperTest {
 
 
-
    @Test
    public void testVerticalBoundsOnGroup1(){
       final int currentRow = 0;

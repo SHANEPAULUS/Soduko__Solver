@@ -2,13 +2,17 @@ package com.shane.sodoku;
 
 import com.shane.sodoku.tools.SodokuHelper;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 
 /** Test5 class which contains unit tests based on the {@link Sodoku} class.
+ *
  * @author SHANE
  * <BR>30-Sep-2018 : Created class (SHANE)
  */
+
+@Ignore
 public class SodokuTest {
    
    private final Integer[][] problemArray = {
