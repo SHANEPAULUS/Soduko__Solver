@@ -21,14 +21,14 @@ public class Sodoku {
    
    private static final Log logger = LogFactory.getLog(Sodoku.class);
    
-   private SodokuCell [][] unsolvedPuzzle;
-   private SodokuCell [][] solvedPuzzle;
+   private Integer [][] unsolvedPuzzle;
+   private Integer [][] solvedPuzzle;
    private DifficultyLevel difficultyLevel;
    
    
    public Sodoku(){
-      this.unsolvedPuzzle = new SodokuCell[PUZZLE_MAX][PUZZLE_MAX];
-      this.solvedPuzzle = new SodokuCell[PUZZLE_MAX][PUZZLE_MAX];
+      this.unsolvedPuzzle = new Integer[PUZZLE_MAX][PUZZLE_MAX];
+      this.solvedPuzzle = new Integer[PUZZLE_MAX][PUZZLE_MAX];
    }
    
    
@@ -36,7 +36,7 @@ public class Sodoku {
     * Getter for property unsolvedPuzzle.
     * @return Value of property unsolvedPuzzle.
     */
-   public final SodokuCell[][] getUnsolvedPuzzle(){
+   public final Integer[][] getUnsolvedPuzzle(){
       return this.unsolvedPuzzle;
    }
    
@@ -44,7 +44,7 @@ public class Sodoku {
     * Setter for property unsolvedPuzzle.
     * @param newUnsolvedPuzzle, the new value for property unsolvedPuzzle.
     */
-   public final void setUnsolvedPuzzle(final SodokuCell[][] newUnsolvedPuzzle){
+   public final void setUnsolvedPuzzle(final Integer[][] newUnsolvedPuzzle){
       this.unsolvedPuzzle = newUnsolvedPuzzle;
    }
    
@@ -52,7 +52,7 @@ public class Sodoku {
     * Getter for property solvedPuzzle.
     * @return Value of property solvedPuzzle.
     */
-   public final SodokuCell[][] getSolvedPuzzle(){
+   public final Integer[][] getSolvedPuzzle(){
       return this.solvedPuzzle;
    }
    
@@ -60,7 +60,7 @@ public class Sodoku {
     * Setter for property solvedPuzzle.
     * @param newSolvedPuzzle, the new value for property solvedPuzzle.
     */
-   public final void setSolvedPuzzle(final SodokuCell[][] newSolvedPuzzle){
+   public final void setSolvedPuzzle(final Integer[][] newSolvedPuzzle){
       this.solvedPuzzle = newSolvedPuzzle;
    }
    
@@ -89,12 +89,12 @@ public class Sodoku {
       
       if(this.unsolvedPuzzle != null){
          toStringBuilder.append("\nUnsolved puzzle\n");
-         toStringBuilder.append(SodokuUtils.matrixToString(this.unsolvedPuzzle));
+         toStringBuilder.append(SodokuUtils.puzzleToString(this.unsolvedPuzzle));
       }
       
       if(this.solvedPuzzle != null){
          toStringBuilder.append("\nSolved puzzle\n");
-         toStringBuilder.append(SodokuUtils.matrixToString(this.solvedPuzzle));
+         toStringBuilder.append(SodokuUtils.puzzleToString(this.solvedPuzzle));
       }
       
       return toStringBuilder.toString();

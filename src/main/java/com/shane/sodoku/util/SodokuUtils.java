@@ -1,8 +1,5 @@
 package com.shane.sodoku.util;
 
-import com.shane.sodoku.SodokuCell;
-
-
 /**
  *
  * @author SHANE
@@ -12,18 +9,18 @@ import com.shane.sodoku.SodokuCell;
 public class SodokuUtils {
    
    
-   public static String matrixToString(final SodokuCell[][] matrix){
-      final StringBuilder matrixBuilder = new StringBuilder();
+   public static String puzzleToString(final Integer[][] puzzle){
+      final StringBuilder puzzleBuilder = new StringBuilder();
       
-      for(int outer = 0; outer < matrix.length; outer ++){
-         for(int inner = 0; inner < matrix[outer].length; inner ++){
-            final SodokuCell currentValue = matrix[outer][inner];
-            matrixBuilder.append(currentValue == null || currentValue.getValue() == null ? "_" : currentValue.getValue()).append(" ");
+      for(int row = 0; row < puzzle.length; row ++){
+         for(int cell = 0; cell < puzzle[row].length; cell ++){
+            final Integer currentEntry = puzzle[row][cell];
+            puzzleBuilder.append(currentEntry == null ? "_" : currentEntry).append(" ");
          }
          
-         matrixBuilder.append("\n");
+         puzzleBuilder.append("\n");
       }
       
-      return matrixBuilder.toString();
+      return puzzleBuilder.toString();
    }
 }
