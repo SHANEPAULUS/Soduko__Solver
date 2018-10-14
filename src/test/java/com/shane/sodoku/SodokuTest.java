@@ -32,7 +32,7 @@ public class SodokuTest {
    public void testSodokuRandomlyFilled(){
       final Sodoku sodoku = new Sodoku();
       SodokuHelper.randomlyFillSodokuUnsolvedPuzzle(sodoku);
-      SodokuHelper.fillUnsolvedPuzzle(sodoku);
+      //SodokuHelper.fillUnsolvedPuzzle(sodoku);
       
       System.out.println(sodoku.toString());
       

@@ -18,7 +18,7 @@ public class SodokuUtils {
       for(int outer = 0; outer < matrix.length; outer ++){
          for(int inner = 0; inner < matrix[outer].length; inner ++){
             final SodokuCell currentValue = matrix[outer][inner];
-            matrixBuilder.append(currentValue == null ? "_" : currentValue.getValue()).append(" ");
+            matrixBuilder.append(currentValue == null || currentValue.getValue() == null ? "_" : currentValue.getValue()).append(" ");
          }
          
          matrixBuilder.append("\n");

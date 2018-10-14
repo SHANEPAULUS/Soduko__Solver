@@ -1,11 +1,8 @@
 package com.shane.sodoku.tools;
 
-import java.util.Random;
-
 import com.shane.sodoku.DifficultyLevel;
 import com.shane.sodoku.Sodoku;
 import com.shane.sodoku.SodokuCell;
-import com.shane.sodoku.util.SodokuUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,14 +21,35 @@ public class SodokuHelper {
    private static final Log logger = LogFactory.getLog(SodokuHelper.class);
    private static final Integer[] possibleNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
    
+   public static final Integer[][] PROBLEM_ARRAY = {
+         {9, null, null, 1, null, null, null, null, 5},
+         {null, null, 5, null, 9, null, 2, null, 1}, 
+         {8, null, null, null, 4, null, null, null, null}, 
+         {null, null, null, null, 8, null, null, null, null}, 
+         {null, null, null, 7, null, null, null, null, null}, 
+         {null, null, null, null, 2, 6, null, null, 9}, 
+         {2, null, null, 3, null, null, null, null, 6}, 
+         {null, null, null, 2, null, null, 9, null, null}, 
+         {null, null, 1, 9, null, 4, 5, 7, null}, 
+   };
+   
+   
+   
    
    public static void randomlyFillSodokuUnsolvedPuzzle(final Sodoku sodoku){
       final SodokuCell[][] unsolvedMatrix = new SodokuCell[Sodoku.PUZZLE_MAX][Sodoku.PUZZLE_MAX];
-      final int validEntriesPerRow = appropriateValidEntriesPerRow(sodoku.getDifficultyLevel());
+      
+      for(int row = 0; row < PROBLEM_ARRAY.length; row ++){
+         for(int cell = 0; cell < PROBLEM_ARRAY[row].length; cell ++){
+            unsolvedMatrix[row][cell] = new SodokuCell(PROBLEM_ARRAY[row][cell], true);
+         }
+      }
+      
+      /**final int validEntriesPerRow = 8;//appropriateValidEntriesPerRow(sodoku.getDifficultyLevel());
       
       for(int row = 0; row < Sodoku.PUZZLE_MAX; row ++){
          for(int cell = 0; cell <= validEntriesPerRow; cell ++){
-            int randomCellPosition = newRandomColumn();
+            int randomCellPosition = cell;//newRandomColumn();
             SodokuCell randomCellValue = new SodokuCell(newRandomValue(), false);
             
             while(alreadyHasValueOnHorizontalAxis(row, randomCellPosition, randomCellValue.getValue(), unsolvedMatrix) || alreadyHasValueOnVerticalAxis(row, randomCellPosition, randomCellValue.getValue(), unsolvedMatrix) || alreadyHasValueInGroup(row, randomCellPosition, randomCellValue.getValue(), unsolvedMatrix)){
@@ -41,104 +59,22 @@ public class SodokuHelper {
             
             unsolvedMatrix[row][randomCellPosition] = randomCellValue;
          }
-      }
+      }*/
       
       sodoku.setUnsolvedPuzzle(unsolvedMatrix);
    }
    
-   public static void fillUnsolvedPuzzle(final Sodoku sodoku){
-      final SodokuCell[][] unsolvedPuzzle = new SodokuCell[sodoku.getUnsolvedPuzzle().length][sodoku.getUnsolvedPuzzle()[0].length];
-      copySodokuCellArray(sodoku.getUnsolvedPuzzle(), unsolvedPuzzle);
-      
-      System.out.println("Original puzzle >> \n" + SodokuUtils.matrixToString(unsolvedPuzzle));
    
-      for(int row = 0; row < unsolvedPuzzle.length; row ++){
-         for(int cell = 0; cell < unsolvedPuzzle[row].length; cell ++){
-            final SodokuCell currentValue = unsolvedPuzzle[row][cell];
-            
-            if(currentValue == null){   // We obviously need to fill the null values...
-               final SodokuCell newRandomValue = new SodokuCell(null, true);   // using the random strategy wastes memory and time.
-               boolean foundMissingValue = false;
-               
-               for(int currentNumber : possibleNumbers){
-                  newRandomValue.setValue(currentNumber);
-                  
-                  if(fitsIntoCell(row, cell, newRandomValue, unsolvedPuzzle)){
-                     foundMissingValue = true;
-                     break;
-                  }
-               }
-               
-               if(foundMissingValue){
-                  unsolvedPuzzle[row][cell] = newRandomValue;
-               }else{
-                  swapWithWeakCells(unsolvedPuzzle, row, cell, newRandomValue);
-               }
-            }
+   public void fillUnsolvedPuzzle(final Sodoku sodoku){
+      final SodokuCell[][] sodokuCell = new SodokuCell[Sodoku.PUZZLE_MAX][Sodoku.PUZZLE_MAX];
+      final SodokuCell[][] unsolvedSodokuCell = sodoku.getUnsolvedPuzzle();
+      
+      for(int row = 0; row < unsolvedSodokuCell.length; row ++){
+         for(int cell = 0; cell < unsolvedSodokuCell[row].length; cell ++){
+            final SodokuCell currentEntry = unsolvedSodokuCell[row][cell];
          }
       }
-      
-      sodoku.setSolvedPuzzle(unsolvedPuzzle);
    }
-   
-   
-   /** This method checks the current position and see if we can swap it out with a weak cell. */
-   private static void swapWithWeakCells(final SodokuCell[][] unsolvedPuzzle, final int currentRow, final int currentCell, final SodokuCell randomCell){
-      boolean hasFoundValue = false;
-      
-      for(final Integer proposedValue : possibleNumbers){
-         randomCell.setValue(proposedValue);
-         
-         for(int cell = 0; cell < unsolvedPuzzle[currentRow].length; cell ++){
-            final SodokuCell sodokuCell = unsolvedPuzzle[currentRow][cell];
-            
-            if(sodokuCell != null && sodokuCell.getIsWeakCell() && sodokuCell.getValue().intValue() != proposedValue.intValue()){
-               System.out.println(SodokuUtils.matrixToString(unsolvedPuzzle));
-               unsolvedPuzzle[currentRow][cell] = null;   // temporary set this to null or else the check will always fail!
-               System.out.println("1. " + sodokuCell.getValue() + " on " + currentCell + " >> " + fitsIntoCell(currentRow, currentCell, sodokuCell, unsolvedPuzzle));
-               System.out.println("2. " + randomCell.getValue() + " on " + cell + " >> " + fitsIntoCell(currentRow, cell, randomCell, unsolvedPuzzle) + "\n");
-               
-               hasFoundValue = fitsIntoCell(currentRow, currentCell, sodokuCell, unsolvedPuzzle) && fitsIntoCell(currentRow, cell, randomCell, unsolvedPuzzle);
-               
-               if(hasFoundValue){
-                  System.out.println("Swapped out cell " + cell + " with value " + sodokuCell.getValue() + " with cell " + currentCell + " with value >> " + randomCell.getValue());
-                  unsolvedPuzzle[currentRow][currentCell] = sodokuCell;
-                  unsolvedPuzzle[currentRow][cell] = randomCell;
-                  break;
-               }else{
-                  unsolvedPuzzle[currentRow][cell] = sodokuCell;
-               }
-            }
-         }
-         
-         if(hasFoundValue){
-            break;
-         }
-      }
-      
-//      if(!hasFoundValue){
-//         throw new IllegalStateException("Could not fill the unsolved Sodoku puzzle as all possible combinations has been used. Check methods on the SodokuHelper class for for problems.");
-//      }
-   }
-   
-   
-   private static boolean fitsIntoCell(final int row, final int cell, final SodokuCell sodokuCell, final SodokuCell[][] sodokuCells){
-      return !alreadyHasValueOnHorizontalAxis(row, cell, sodokuCell.getValue(), sodokuCells) && !alreadyHasValueOnVerticalAxis(row, cell, sodokuCell.getValue(), sodokuCells) && !alreadyHasValueInGroup(row, cell, sodokuCell.getValue(), sodokuCells);
-   }
-   
-   
-   
-   /** Randomly generate a cell position we will fill for the unsolved puzzle. */
-   private static int newRandomColumn(){
-      return new Random().nextInt(Sodoku.PUZZLE_MAX);
-   }
-   
-   
-   /** Randomly generate a value we can use to fill the unsolved puzzle / generate a new value for the solved puzzle. */
-   private static Integer newRandomValue(){
-      return new Random().nextInt(Sodoku.PUZZLE_MAX) + 1;
-   }
-   
    
    /** Checks if we already have the value on a given vertical axis. */
    public static boolean alreadyHasValueOnVerticalAxis(final int currentRow, final int currentCell, final Integer currentValue, final SodokuCell[][] populatedMatrix){
